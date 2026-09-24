@@ -1,11 +1,11 @@
 {
-  "note": "Editorial analysis questions maintained in this repository, grouped by issues shared across OSCAL and issues specific to each approach. Each question includes its reasoning; the OSCAL examples provide evidence without settling the design choices.",
+  "note": "Editorial analysis questions maintained in this repository, grouped by issues shared across all approaches and issues specific to each approach. Each question includes its reasoning; the OSCAL examples provide evidence without settling the design choices.",
   "intro": "These questions identify unresolved design choices, not recommended changes. The analysis distinguishes what the OSCAL examples demonstrate from what remains open across models and approaches.",
   "sections": [
     {
       "key": "all",
       "label": "Across all three approaches",
-      "intro": "Gaps in the models themselves. None is answered by choosing an approach, and each changes what all three can express.",
+      "intro": "Questions shared by all three approaches. None is answered by choosing an approach, and each affects how the resulting artifacts are interpreted.",
       "questions": [
         {
           "id": "xccdf",
@@ -14,20 +14,26 @@
         },
         {
           "id": "rule-metadata",
-          "q": "Where does the metadata that describes a rule go?",
-          "why": "Rule metadata includes severity, weight, rationale and whether a check is automated or manual. The AWS and DISA OSCAL examples use namespaced properties for severity rather than a dedicated field. Consumers need shared conventions to interpret this content. Which metadata belongs on a rule, and whether shared namespaces or schema fields should carry it, remains open."
+          "q": "Where should rule metadata, including remediation, go?",
+          "why": "The DISA XCCDF benchmark carries the fields below, with distinct check and fix content. The AWS and DISA OSCAL examples use namespaced properties for severity rather than a dedicated field. The STIG and CIS assessment-plan examples include remediation as steps, but an AP step does not inherently distinguish a check from a fix; they rely on titles or step-type properties. Which metadata belongs in each OSCAL model, and how should consumers distinguish remediation from checks?",
+          "metadata": ["Severity", "Weight", "Version", "Title", "References", "Identifiers", "Vulnerability discussion", "Check content", "Fix text"]
         },
         {
-          "id": "remediation",
-          "q": "Where does remediation land?",
-          "why": "The AWS catalog uses remediation links, while the STIG and CIS assessment plans carry remediation steps. The component-first examples do not carry remediation. These conventions do not provide a dedicated rule-remediation field. OSCAL's plan of action and milestones addresses a particular finding, not a reusable fix for every instance of a condition. Which structure should carry reusable remediation instructions remains open."
+          "id": "proposal-1",
+          "q": "What does an assessment-platform add when an assessment component already describes the runner?",
+          "why": "An OSCAL assessment plan can declare a runner as a component in assessment-assets, or describe an assessment-platform that includes a component. The examples do not establish what information the platform contributes beyond that component, such as execution context, or when that additional structure is needed. This choice applies regardless of where the hardening rule is modeled."
+        },
+        {
+          "id": "proposal-3",
+          "q": "How should an assessment plan associate an assessment asset with its tasks or activities?",
+          "why": "Assessment results can associate a task and the assessment-platform that produced its results, using result origins and actors to identify the producer. An assessment plan, however, has no corresponding way to instruct which component or assessment-platform should execute each task or activity before results exist. That plan-side linkage is needed across all three approaches, regardless of where the hardening rule is modeled."
         }
       ]
     },
     {
       "key": "catalog-first",
       "label": "Catalog-first",
-      "intro": "The rule is a control in a catalog. What is unsettled is how many documents that produces and where the outcome lands.",
+      "intro": "The rule is a control in a catalog. Open questions concern how catalogs combine, how many documents that produces and where outcomes land.",
       "questions": [
         {
           "id": "one-ssp",
@@ -36,12 +42,12 @@
         },
         {
           "id": "requirement-level",
-          "q": "If OSCAL gained a field for requirement level, how much of this disagreement would be left?",
-          "why": "OSCAL has no dedicated core field distinguishing shall, should and may. The examples can carry such labels in properties, but consumers need conventions to interpret them. Catalog-first puts benchmark and regulatory controls into the same profile. It remains unclear how much model-placement disagreement concerns binding force rather than document structure, and whether a shared requirement-level field would reduce it."
+          "q": "If OSCAL catalog controls gained a field for requirement level, how much of this disagreement would be left?",
+          "why": "OSCAL catalog controls have no dedicated core field distinguishing shall, should and may. The examples can carry such labels in properties, but consumers need conventions to interpret them. Catalog-first puts benchmark and regulatory controls into the same profile. It remains unclear how much model-placement disagreement concerns binding force rather than document structure, and whether a shared requirement-level field would reduce it."
         },
         {
           "id": "control-type",
-          "q": "Should a control declare its type, so a regulatory control and a technical hardening control can be told apart?",
+          "q": "Should an OSCAL catalog control declare its type, so a regulatory control and a technical hardening control can be told apart?",
           "why": "The catalog/profile model can combine regulatory controls with technical hardening controls, but it has no dedicated core field distinguishing those kinds. Tools would need a shared property convention or schema support to report regulatory coverage separately from hardening coverage. This question concerns the kind of requirement, distinct from whether its requirement level is shall, should or may."
         },
         {
@@ -53,13 +59,23 @@
           "id": "paper-cat-2",
           "q": "Where should benchmark outcomes be recorded, in SSP implementation claims or assessment results, and how should tools distinguish them?",
           "why": "An SSP by-component response describes an implementation claim, while assessment results record evidence and outcomes. A benchmark workflow may need both, but they answer different questions. Tools need to distinguish intended configuration from observed satisfaction and preserve the relationship between the two records."
+        },
+        {
+          "id": "ssp-claim-evidence",
+          "q": "How should evidence be linked to an SSP implementation claim when a benchmark result is recorded there?",
+          "why": "An assessment-results observation can use relevant-evidence to point to supporting material. An SSP by-component implementation claim has no equivalent field for attaching evidence directly to the claim. If a benchmark outcome is recorded in the SSP, how should tools connect that claim to its supporting evidence without conflating it with an assessed result in an AR?"
+        },
+        {
+          "id": "benchmark-vendor-catalogs",
+          "q": "How should an SSP combine benchmark and vendor catalogs that describe the same system recommendations?",
+          "why": "A benchmark and a vendor catalog may describe overlapping recommendations for the same system. An SSP responding to both needs to preserve which source supplied each recommendation while avoiding duplicate or conflicting implementation claims. It remains open whether one profile should reconcile those controls before the SSP imports it, or whether another convention should relate equivalent recommendations."
         }
       ]
     },
     {
       "key": "component-first",
       "label": "Component-first",
-      "intro": "The rule sits on the component it configures. Open questions concern runner identification, importing component definitions and tailoring benchmark content.",
+      "intro": "The rule sits on the component it configures. Open questions concern importing component definitions and tailoring benchmark content.",
       "questions": [
         {
           "id": "which-cdef-maps",
@@ -67,34 +83,9 @@
           "why": "The control link is inline rather than held in a mapping collection. The software component definition holds rules, while the validation component definition holds checks; those artifacts may have different maintainers. A mapping provider could update either or both. The OSCAL examples do not establish which document should own that relationship or how duplicated mappings would stay consistent."
         },
         {
-          "id": "proposal-1",
-          "q": "Should assessment platform usage be optional in an assessment plan?",
-          "why": "An assessment plan may describe a runner as a component, a platform using components, or a tool identified through properties. These alternatives leave open when an explicit assessment platform adds necessary information and when a component reference is sufficient for a consumer to execute or interpret a check."
-        },
-        {
-          "id": "proposal-2",
-          "q": "When is an assessment component sufficient, and when is an assessment platform also needed?",
-          "why": "The OSCAL examples use different combinations of assessment-assets, assessment-platforms and components. They do not establish a shared rule for deciding whether a component alone identifies the runner or a platform must also describe its execution context. A consistent distinction would help consumers interpret equivalent workflows."
-        },
-        {
-          "id": "proposal-3",
-          "q": "How should an assessment asset be associated with tasks or activities?",
-          "why": "A task identifies work to perform, while an assessment asset describes resources available to perform it. The component-first examples do not establish a complete, interoperable association between these structures. The question is which references should identify the runner for a particular task or activity."
-        },
-        {
-          "id": "proposal-4",
-          "q": "How should an observation identify the assessment asset that produced it when several assets are declared?",
-          "why": "An assessment result may declare several assets, so naming an observation's producer requires an unambiguous relationship. The component-first result example does not establish a complete path from observation to producing asset. The open question is how consumers should recover that association without relying on tool-specific assumptions."
-        },
-        {
           "id": "paper-comp-1",
           "q": "How should an SSP combine benchmark and vendor component definitions that describe the same system component?",
           "why": "A system may use vendor component definitions alongside benchmark component definitions for the same software. Importing both can produce overlapping descriptions, rules and control implementations. It remains open whether an SSP should retain multiple OSCAL components, merge them, or use another convention to represent the single system component consistently."
-        },
-        {
-          "id": "paper-comp-2",
-          "q": "Should desired-state values from benchmark component definitions be replaced with actual-state values in the SSP?",
-          "why": "Rules describe prescribed configuration, while an SSP records the system owner's implementation claims. Replacing prescribed values with actual values could lose the benchmark baseline; retaining only prescribed values could misrepresent implementation. The question is how to keep the two meanings distinct while preserving the relationship between benchmark requirements and the system."
         },
         {
           "id": "paper-comp-3",
@@ -121,7 +112,7 @@
         {
           "id": "paper-ap-1",
           "q": "How should assessment-plan benchmarks support tailoring available through catalogs and profiles?",
-          "why": "Activities and steps have no parameter assembly, so the assessment-first examples place required values in text. Tailoring can therefore require editing procedural content rather than selecting controls or setting parameter values through a profile. The question is how to support reusable, auditable tailoring without losing the assessment workflow."
+          "why": "OSCAL assessment-plan activities and steps have no parameter assembly, so the assessment-first examples place required values in text. Tailoring can therefore require editing procedural content rather than selecting controls or setting parameter values through a profile. The question is how to support reusable, auditable tailoring without losing the assessment workflow."
         }
       ]
     }

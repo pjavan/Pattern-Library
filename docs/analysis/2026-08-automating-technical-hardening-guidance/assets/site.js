@@ -1921,7 +1921,7 @@
     document.documentElement.style.setProperty("--header-h", h.offsetHeight + "px");
   }
   /* --- the open questions: <div data-open-questions></div> ---------------
-     Four sections, one across all three approaches and one per approach, each
+     Four sections: shared questions and one per approach, each
      a list of single-line questions that open into the reasoning behind them.
 
       Questions and explanations are editorial analysis content in
@@ -1950,6 +1950,15 @@
           det.appendChild(sum);
           var body = el("div", "oq__why");
           body.appendChild(el("p", null, q.why));
+          if (q.metadata) {
+            var fields = el("ul", "oq__fields");
+            q.metadata.forEach(function (name) {
+              var item = el("li");
+              item.appendChild(el("strong", null, name));
+              fields.appendChild(item);
+            });
+            body.appendChild(fields);
+          }
           det.appendChild(body);
           wrap.appendChild(det);
         });

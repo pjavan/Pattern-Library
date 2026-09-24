@@ -2049,7 +2049,7 @@ def _words(text: str) -> int:
 
 
 def check_questions() -> None:
-    """Four sections of editorial questions, with stable ids and reasoning."""
+    """Shared and approach-specific questions with stable ids."""
     print("\n[questions] editorial content and stable question identifiers")
     with open(os.path.join(DATA, "questions.json"), encoding="utf-8") as stream:
         q = json.load(stream)
@@ -2057,7 +2057,7 @@ def check_questions() -> None:
         approaches = [a["key"] for a in json.load(stream)["approaches"]]
     check("questions carry no background attribution", not editorial_reference_paths(q))
     secs = q["sections"]
-    check("four sections: one across the three, then one each",
+    check("four sections: shared questions, then one per approach",
           [s["key"] for s in secs] == ["all"] + approaches,
           str([s["key"] for s in secs]))
     for s in secs:
@@ -2081,12 +2081,12 @@ def check_questions() -> None:
         check(f"{where}: says why it is open, in a paragraph",
               isinstance(reason, str) and 20 <= len(reason.split()) <= 90,
               f"{len(reason.split()) if isinstance(reason, str) else 0} words")
-    # IDs remain stable so existing deep links continue to resolve.
+    # IDs remain stable for questions retained after a reclassification.
     required = {
-        "all": {"xccdf", "rule-metadata", "remediation"},
-        "catalog-first": {"one-ssp", "requirement-level", "control-type", "paper-cat-1", "paper-cat-2"},
-        "component-first": {"which-cdef-maps", "proposal-1", "proposal-2", "proposal-3",
-                            "proposal-4", "paper-comp-1", "paper-comp-2", "paper-comp-3",
+        "all": {"xccdf", "rule-metadata", "proposal-1", "proposal-3"},
+        "catalog-first": {"one-ssp", "requirement-level", "control-type", "paper-cat-1", "paper-cat-2",
+                  "ssp-claim-evidence", "benchmark-vendor-catalogs"},
+        "component-first": {"which-cdef-maps", "paper-comp-1", "paper-comp-3",
                             "paper-comp-4", "paper-comp-5"},
         "assessment-first": {"paper-ap-1"},
     }
