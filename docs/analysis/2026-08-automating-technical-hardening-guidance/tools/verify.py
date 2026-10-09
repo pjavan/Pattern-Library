@@ -2083,7 +2083,8 @@ def check_questions() -> None:
               f"{len(reason.split()) if isinstance(reason, str) else 0} words")
     # IDs remain stable for questions retained after a reclassification.
     required = {
-        "all": {"xccdf", "rule-metadata", "proposal-1", "proposal-3"},
+        "all": {"xccdf", "rule-metadata", "proposal-1", "proposal-3", "proposal-4",
+                "paper-comp-2"},
         "catalog-first": {"one-ssp", "requirement-level", "control-type", "paper-cat-1", "paper-cat-2",
                   "ssp-claim-evidence", "benchmark-vendor-catalogs"},
         "component-first": {"which-cdef-maps", "paper-comp-1", "paper-comp-3",
@@ -2533,19 +2534,28 @@ def check_stakeholders() -> None:
     #  Editing somebody else's document is a heavier ask than shipping your own,
     #  and the row said nothing at all about it.
     #
-    #  So: exactly one approach gives this party a document of its own, and the
-    #  other two give it a document to edit. Both are asserted, because a row
-    #  with a model on it and no explanation of whose model it is would read as
-    #  a fourth author of the same file.
+    #  The component approach then moved again, on the approach's own account
+    #  of its parties (issue 16): the technology provider ties each rule to the
+    #  framework in its own component definition, the validation component
+    #  carries no tie, and the mapping provider publishes mappings between
+    #  frameworks, which is a mapping collection of its own. The tie stays
+    #  inline; what the mapping provider ships there is the framework-to-
+    #  framework mapping that transposes a plan of record to another regulation.
+    #
+    #  So: two approaches give this party a document of its own, and the third
+    #  gives it a document to edit. Both are asserted, because a row with a
+    #  model on it and no explanation of whose model it is would read as a
+    #  fourth author of the same file.
     MAPS_IN = {"catalog-first": "mapping-collection",
-               "component-first": "component-definition",
+               "component-first": "mapping-collection",
                "assessment-first": "assessment-plan"}
+    OWN_DOCUMENT = {"catalog-first", "component-first"}
     for key in sorted(sh["approaches"]):
         per = sh["approaches"][key]
         holders = sorted(k for k in keys
                          if any(m["model"] == "mapping-collection"
                                 for m in entries(per[k])))
-        wants = ["mapper"] if key == "catalog-first" else []
+        wants = ["mapper"] if key in OWN_DOCUMENT else []
         check(f"{key}: a mapping collection is the mapping provider's, or nobody's",
               holders == wants, str(holders))
         named = [m["model"] for m in entries(per["mapper"])]
@@ -2557,9 +2567,9 @@ def check_stakeholders() -> None:
         #  Whether it is the party's own document is not taken from the prose.
         #  A document is somebody else's exactly when somebody else writes it,
         #  and that is already in the table: the guidance authors and the engine
-        #  provider write the component definition and the assessment plan, and
-        #  nobody but the mapping provider writes a mapping collection.
-        own = key == "catalog-first"
+        #  provider write the assessment plan, and nobody but the mapping
+        #  provider writes a mapping collection.
+        own = key in OWN_DOCUMENT
         others = sorted(k for k in keys if k != "mapper"
                         and any(m["model"] == MAPS_IN[key] for m in entries(per[k])))
         check(f"{key}: the {MAPS_IN[key]} is "

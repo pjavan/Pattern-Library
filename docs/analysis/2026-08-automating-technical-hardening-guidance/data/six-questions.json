@@ -360,11 +360,11 @@
     {
       "slot": "4",
       "approach": "component-first",
-      "state": "partial",
+      "state": "filled",
       "snippet_ids": [
         "ibm-validation-ansible"
       ],
-      "note": "The proposed rule reference extends by-component. An assessor can include the component definition and associated checks in an assessment plan.",
+      "note": "In the SSP every subject is a component, the whole environment defaulting to This System, so the by-component response names what the rule runs against.",
       "mechanisms": [
         "assembly",
         "proposed"
@@ -443,7 +443,7 @@
         "ibm-ap-task-subjects",
         "ibm-ar-observation"
       ],
-      "note": "The examples leave runner associations unresolved, including how an assessment asset links to a task or an observation.",
+      "note": "Each assessment-plan activity names its runner through the proposed assessment-asset-uuid and its checks through check-ids, and each observation carries the asset and check that produced it.",
       "mechanisms": [
         "assembly",
         "proposed"

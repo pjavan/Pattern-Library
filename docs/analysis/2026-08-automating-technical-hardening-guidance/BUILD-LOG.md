@@ -8482,3 +8482,80 @@ the pin in `test_source_inputs.py` say 8, and the index was rebaselined.
 from 4, since it counts files. `ibm_cdef_files` in the corpus figures stays at 4:
 its glob is `*component-definition.json`, which the combined `-cd.json` names do
 not match, so the same components are not counted twice.
+
+## Session: issue 16, the review closed out
+
+### What the issue asked for that had not reached the site
+
+**Date:** 2026-10-09
+**Scope:** data/questions.json, data/stakeholders.json, data/six-questions.json,
+component-first.html, two stakeholder checks and the stable question ids
+**Result:** `--all --offline` 2708/2708; unit tests 68/68; approach pages within
+budget at a 9.5 per cent spread.
+
+The review on issue 16 was read end to end against the published pages. Most of
+the accepted edits were already in. What follows is what was not.
+
+**Two accepted moves had become deletions.** The reply on the issue accepted
+moving the observation-to-asset question and the desired-state question to the
+shared section. Both were deleted instead. Both are back, in the shared section,
+under their old ids (`proposal-4`, `paper-comp-2`), and the ids are now held by
+the stable-id check. The observation question is reframed as the issue asked:
+it concerns the current assessment-results model, an observation can name its
+producer through origin actors but not the check it ran, and the component-first
+examples propose the asset UUID and check identifier on each observation.
+
+**The component-first party table now reads as the approach describes itself.**
+The opening post rewrote five rows. Fitted to the table's two-sentence notes and
+to the page budget:
+
+- The mapping provider publishes framework-to-framework mappings, a mapping
+  collection of its own, and does not tie controls to product rules.
+- The technology provider's rules carry the framework tie and the evidence type
+  that proves each rule.
+- The policy engine provider's checks carry no framework tie.
+- The system owner also selects the validation components the plan uses.
+- The auditor's run makes observations and findings; observations roll up to
+  control-level findings through check, rule and control.
+
+This retires the "software or validation" marker on the mapping provider's row,
+which had stood for the open question of which component definition carries the
+tie. The approach's answer is the rule component. Two stakeholder checks move
+with it: a mapping collection may now be the mapping provider's on two
+approaches, and on both it is its own document. The marker's own rule is kept,
+unused, for any approach that leaves the question open again.
+
+**`which-cdef-maps` keeps its id and asks what is still open.** With the tie
+settled on the rule component, the question is how a framework the technology
+provider did not map reaches the same rules: an SSP override, or a mapping
+collection between frameworks, and which keeps rule-level precision.
+
+**The copy-and-tailor convention is cited, and the questions stay open.** The
+answers on the issue to `paper-comp-1`, `-3`, `-4` and `-5` describe one
+convention: with no way to import a component definition, the SSP author copies
+it, merges overlapping components, keeps the rules that serve the profile and
+sets parameter values, with no link back to the source; rules reach the plan and
+results through the SSP. Each question now states that convention and what it
+leaves open.
+
+**Question 4 is answered for component-first.** In the SSP every subject is a
+component, the whole environment defaulting to This System, so the by-component
+response names what the rule runs against. The cell moves from partial to
+filled; its model and assemblies are unchanged.
+
+**The runner convention is stated.** Question 5's cell and the shared
+`proposal-3` question now say that each plan activity names its runner through
+the proposed `assessment-asset-uuid` and its checks through `check-ids`, which
+the committed assessment plan and results already show.
+
+**The editorial standard is printed.** The questions page intro says a question
+sits under the approach where it is most acute, not exclusively, and a question
+every approach shares sits in the shared section.
+
+**Not done, and why.** Questions 6a and 6b stay where they are: the issue says
+findings were added to the assessment results example and an SSP example was
+written, but neither file was attached, and the matrix is verified against the
+committed examples. The "late, external" binding on question 2 stays unavailable
+for component-first: it describes a separate mapping artifact reaching a rule,
+which the schema does not allow, and an SSP override is the implementor's
+response rather than that.

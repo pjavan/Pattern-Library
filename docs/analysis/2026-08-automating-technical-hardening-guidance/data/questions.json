@@ -1,6 +1,6 @@
 {
   "note": "Editorial analysis questions maintained in this repository, grouped by issues shared across all approaches and issues specific to each approach. Each question includes its reasoning; the OSCAL examples provide evidence without settling the design choices.",
-  "intro": "These questions identify unresolved design choices, not recommended changes. The analysis distinguishes what the OSCAL examples demonstrate from what remains open across models and approaches.",
+  "intro": "These questions identify unresolved design choices, not recommended changes. Each question sits under the approach where it is most acute, not exclusively; a question that applies to every approach sits in the shared section. The analysis distinguishes what the OSCAL examples demonstrate from what remains open across models and approaches.",
   "sections": [
     {
       "key": "all",
@@ -26,7 +26,17 @@
         {
           "id": "proposal-3",
           "q": "How should an assessment plan associate an assessment asset with its tasks or activities?",
-          "why": "Assessment results can associate a task and the assessment-platform that produced its results, using result origins and actors to identify the producer. An assessment plan, however, has no corresponding way to instruct which component or assessment-platform should execute each task or activity before results exist. That plan-side linkage is needed across all three approaches, regardless of where the hardening rule is modeled."
+          "why": "Assessment results can associate a task and the assessment-platform that produced its results, using result origins and actors. An assessment plan has no corresponding way to say which component or assessment-platform should execute each task or activity before results exist. The component-first examples propose an assessment-asset-uuid and check-ids on each activity, naming the validation component that runs it and the checks it runs. The plan-side linkage is needed in all three approaches."
+        },
+        {
+          "id": "proposal-4",
+          "q": "How should an observation identify the assessment asset and check that produced it when several assets are declared?",
+          "why": "An assessment result may hold observations from several assessment assets. In the current model, an observation can name the tool or assessment-platform that produced it through origin actors, but has no field naming the check it ran. The component-first examples propose an asset UUID and a check identifier on each observation, so a consumer can follow observation, asset, check, rule and control. The question applies to every approach that reports automated results."
+        },
+        {
+          "id": "paper-comp-2",
+          "q": "Should desired-state values from benchmark guidance be replaced with actual-state values in the SSP?",
+          "why": "Benchmark guidance prescribes configuration values, while an SSP records the system owner's implementation claims, so every approach that produces SSP content faces this choice. In the component-first examples the SSP author copies a rule's parameters and may set a value equal to, stricter than or looser than the default. Replacing prescribed values could lose the benchmark baseline; keeping only prescribed values could misrepresent the implementation. How should tools keep the two meanings distinct?"
         }
       ]
     },
@@ -75,32 +85,32 @@
     {
       "key": "component-first",
       "label": "Component-first",
-      "intro": "The rule sits on the component it configures. Open questions concern importing component definitions and tailoring benchmark content.",
+      "intro": "The rule sits on the component it configures, and that component carries the tie to the framework. Open questions concern reaching other frameworks, copying component definitions into an SSP and tailoring benchmark content.",
       "questions": [
         {
           "id": "which-cdef-maps",
-          "q": "Which component definition carries the tie to the framework, the one holding the rules or the one holding the checks?",
-          "why": "The control link is inline rather than held in a mapping collection. The software component definition holds rules, while the validation component definition holds checks; those artifacts may have different maintainers. A mapping provider could update either or both. The OSCAL examples do not establish which document should own that relationship or how duplicated mappings would stay consistent."
+          "q": "When the rule component carries the framework tie, how should another framework reach the same rules?",
+          "why": "In this approach the component definition holding the rules carries the tie to the framework through implemented-requirements; a check reaches a control only through check, rule and control, and a validation component carries no framework tie. A system held to another framework can override the tie in its SSP, or transpose results through a mapping collection between the two frameworks. Which route preserves rule-level precision, and who maintains it, remains open."
         },
         {
           "id": "paper-comp-1",
           "q": "How should an SSP combine benchmark and vendor component definitions that describe the same system component?",
-          "why": "A system may use vendor component definitions alongside benchmark component definitions for the same software. Importing both can produce overlapping descriptions, rules and control implementations. It remains open whether an SSP should retain multiple OSCAL components, merge them, or use another convention to represent the single system component consistently."
+          "why": "A system may use vendor and benchmark component definitions for the same software, which can overlap in descriptions, rules and control implementations. OSCAL has no mechanism for importing a component definition, so the convention in this approach is to copy both into the SSP and merge them into one component, keeping only the rules that serve the profile's controls. What remains open is how a merged component records which source supplied each rule."
         },
         {
           "id": "paper-comp-3",
           "q": "Which benchmark context should enter an SSP, and how should tools filter component-definition content during import?",
-          "why": "Benchmark content can include rules, parameters, rationale and procedural detail, not all of which serves the same purpose in an SSP. Import tooling needs a policy for retaining or omitting that context. The open issue is how to reduce duplication without losing information needed to interpret an implementation claim."
+          "why": "Benchmark content can include rules, parameters, rationale and procedural detail. The convention in this approach copies the rule identifier, description, parameter identifier and value, and the implementing-rules tie to controls; audit and remediation procedures are optional, at the SSP author's discretion. Copying duplicates content across every SSP that uses the component. Whether an import mechanism should replace copying, and what filtering it would need, remains open."
         },
         {
           "id": "paper-comp-4",
           "q": "How should component definitions support benchmark selection, exclusions and parameter tailoring?",
-          "why": "The component-first examples place parameters on proposed rules and set-parameters on control implementations. Those structures address parameter values but do not provide a profile's selection and exclusion workflow. How component definitions should support benchmark tailoring, including the scope and persistence of tailoring decisions, remains open."
+          "why": "The component-first examples place parameters on proposed rules and set-parameters on control implementations. The convention in this approach is to tailor while copying: the SSP author drops rules that serve no selected control and sets parameter values, with no link back to the source component definition. That serves one system, but leaves open how tailoring decisions persist and stay auditable when the source component definition changes."
         },
         {
           "id": "paper-comp-5",
           "q": "Should assessment plans or assessment results support importing component definitions with benchmark context?",
-          "why": "The component-first examples carry check content into an assessment plan through assessment assets. That demonstrates one encoding, not a dedicated import mechanism for all benchmark context. The question is whether plans or results should support such imports directly and which rules, parameters and provenance would need to survive."
+          "why": "The component-first examples carry checks into an assessment plan as assessment assets, while rules stay in the SSP and reach the plan and results through their imports, so SSP tailoring carries forward. That demonstrates one encoding, not a dedicated import mechanism. The question is whether plans or results should import component definitions directly, and which rules, parameters and provenance would need to survive."
         }
       ]
     },

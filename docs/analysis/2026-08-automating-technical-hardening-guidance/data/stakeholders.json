@@ -143,11 +143,10 @@
       "mapper": {
         "writes": [
           {
-            "model": "component-definition",
-            "kind": "software or validation"
+            "model": "mapping-collection"
           }
         ],
-        "note": "The mapping provider edits a component definition. Whether the rules or the checks carry the framework mapping remains open."
+        "note": "The mapping provider publishes framework-to-framework mappings, its own document; product rules carry their framework tie."
       },
       "benchmark": {
         "writes": [
@@ -163,7 +162,8 @@
             "model": "component-definition",
             "kind": "software"
           }
-        ]
+        ],
+        "note": "Each rule names its evidence type and carries the framework tie."
       },
       "engine": {
         "writes": [
@@ -172,7 +172,7 @@
             "kind": "validation"
           }
         ],
-        "note": "The provider publishes checks in a component of type validation. System owners and auditors run the checks."
+        "note": "Checks sit in a component of type validation and carry no framework tie."
       },
       "owner": {
         "writes": [
@@ -199,7 +199,8 @@
             ],
             "makes": "the control-implementation responses"
           }
-        ]
+        ],
+        "note": "The owner also picks the validation components the assessment plan uses."
       },
       "auditor": {
         "flows": [
@@ -215,10 +216,10 @@
                 "model": "assessment-results"
               }
             ],
-            "makes": "the observations"
+            "makes": "the observations and findings"
           }
         ],
-        "note": "The auditor runs checks through an assessment plan, allowing the result to identify a host rather than a component."
+        "note": "Observations roll up to control-level findings through check, rule and control."
       }
     },
     "assessment-first": {
