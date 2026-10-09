@@ -149,6 +149,12 @@
     },
     {
       "approach": "component-first",
+      "path": "component-first/cos-ansible-validation-cd.json",
+      "bytes": 3332,
+      "sha256": "25fb1b83230e0c5df473013775b7b9769fb1b981d90b9d7539f57694ce3c89ec"
+    },
+    {
+      "approach": "component-first",
       "path": "component-first/cos-component-definition.json",
       "bytes": 2525,
       "sha256": "4944f506f1f2127950e0fb2cd8e251e66e4ec5a83c5e9126ef147117ad233f4a"
@@ -158,6 +164,12 @@
       "path": "component-first/idservice-component-definition.json",
       "bytes": 5230,
       "sha256": "36b8140ae1272f5e6fef535409375e3cbbd0f0e8387b378ee7d550a3a1760eaf"
+    },
+    {
+      "approach": "component-first",
+      "path": "component-first/idservice-oscap-validation-cd.json",
+      "bytes": 6228,
+      "sha256": "b3f4d83f10133e7ee058b24eb1598f2f081704beaa68473a499c7d7b481a5d06"
     },
     {
       "approach": "component-first",

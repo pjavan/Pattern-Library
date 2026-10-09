@@ -103,7 +103,7 @@
       "totals": {
         "Assessment plan": 1,
         "Assessment results": 1,
-        "Component definition": 4
+        "Component definition": 6
       },
       "files": [
         {
@@ -147,6 +147,22 @@
           "href_external": false
         },
         {
+          "file": "cos-ansible-validation-cd.json",
+          "model": "component-definition",
+          "model_label": "Component definition",
+          "title": "Demo component definition",
+          "counts": {
+            "components": 2,
+            "service": 1,
+            "validation": 1,
+            "rules": 2,
+            "implemented requirements": 2
+          },
+          "bytes": 3332,
+          "href": "examples/component-first/cos-ansible-validation-cd.json",
+          "href_external": false
+        },
+        {
           "file": "cos-component-definition.json",
           "model": "component-definition",
           "model_label": "Component definition",
@@ -174,6 +190,22 @@
           },
           "bytes": 5230,
           "href": "examples/component-first/idservice-component-definition.json",
+          "href_external": false
+        },
+        {
+          "file": "idservice-oscap-validation-cd.json",
+          "model": "component-definition",
+          "model_label": "Component definition",
+          "title": "Demo component definition",
+          "counts": {
+            "components": 2,
+            "service": 1,
+            "validation": 1,
+            "rules": 3,
+            "implemented requirements": 7
+          },
+          "bytes": 6228,
+          "href": "examples/component-first/idservice-oscap-validation-cd.json",
           "href_external": false
         },
         {

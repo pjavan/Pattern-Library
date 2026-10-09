@@ -6,7 +6,7 @@
       "approach": "component-first",
       "prefix": "IBM",
       "directory": "examples/component-first",
-      "expected_files": 6
+      "expected_files": 8
     },
     {
       "key": "easy-dynamics",

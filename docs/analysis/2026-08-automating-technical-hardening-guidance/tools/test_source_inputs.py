@@ -96,7 +96,7 @@ class SourceInputsTests(unittest.TestCase):
         ibm, easy, aws = PINNED["sources"]
         self.assertEqual(PINNED["version"], 1)
         self.assertEqual((ibm["key"], ibm["prefix"], ibm["directory"], ibm["expected_files"]),
-                         ("ibm", "IBM", "examples/component-first", 6))
+                         ("ibm", "IBM", "examples/component-first", 8))
         self.assertEqual((easy["key"], easy["prefix"], easy["directory"], easy["expected_files"]),
                          ("easy-dynamics", "Easy Dynamics", "examples/assessment-first", 19))
         self.assertEqual(aws["prefix"], "AWS/oscal-content-for-aws-services-main")

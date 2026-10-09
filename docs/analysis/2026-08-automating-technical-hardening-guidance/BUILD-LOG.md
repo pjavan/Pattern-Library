@@ -8443,3 +8443,42 @@ report Metaschema constraint findings the JSON schema does not express:
 step, and prop names outside the allowed set. These are the publisher's
 modelling choices, they do not affect the verifier's checks, and they are left
 as they are.
+
+## Session: the IBM pairs arrive as single files
+
+### Two combined component definitions added
+
+**Date:** 2026-10-09
+**Scope:** examples/component-first, the example index and lock, the OSCAL
+inventory, one pinned test
+**Result:** `--all --offline` 2701/2701; unit tests 68/68.
+
+**What was added.** Vikas Agarwal supplied two files on issue 16, each holding a
+service component and the validation component that checks it:
+`idservice-oscap-validation-cd.json` (IDSERVICE with OSCAP) and
+`cos-ansible-validation-cd.json` (COS with Ansible). Every component in them is
+identical to its counterpart in the four separate files. The separate files stay,
+because snippets and verifier checks resolve against them; the pairs are an
+easier way into the same content, not a replacement.
+
+**What was changed in them.** Only the document `uuid` and `last-modified`. All
+four separate files share the document UUID `bbdf7ee6-…`, and the combined files
+arrived with it too, so each combined file now has its own:
+`5387e03f-f015-4c6c-a2b8-384f2319c087` for IDSERVICE with OSCAP and
+`51f93843-4b96-4794-a590-1cbc6bad9b73` for COS with Ansible. Nothing inside the
+components was touched. The UUID shared by the four separate files, and the
+control-implementation and implemented-requirement UUIDs shared by the COS and
+IDSERVICE components, are left as published.
+
+**Raised, not changed.** The three OSCAP checks give
+`target-component-uuid` `0c410eb1-…-c80126a984f9`, which names no component. The
+IDSERVICE component is `…984e9`, and the IBM assessment plan uses `…984e9`. The
+same value is in the separate `oscap-validation-component-definition.json`. It
+was put back to the author on issue 16 rather than corrected here.
+
+**What moved with them.** The IBM set is 8 files, so `tools/source-lock.json` and
+the pin in `test_source_inputs.py` say 8, and the index was rebaselined.
+`oscal-artifacts.json` lists 6 component definitions for component-first, up
+from 4, since it counts files. `ibm_cdef_files` in the corpus figures stays at 4:
+its glob is `*component-definition.json`, which the combined `-cd.json` names do
+not match, so the same components are not counted twice.
